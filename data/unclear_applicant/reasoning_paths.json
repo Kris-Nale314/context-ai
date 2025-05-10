@@ -1,0 +1,21 @@
+{
+  "conclusion": "Approve with additional conditions",
+  "confidence": 0.68,
+  "reasoning_steps": [
+    [
+      "Mixed financial signals",
+      "Industry transition period",
+      "Strong management experience"
+    ],
+    [
+      "Modernization plan validated",
+      "Customer concentration risk mitigated",
+      "Collateral value sufficient"
+    ]
+  ],
+  "counterfactuals": [
+    "Would change to 'Approve with standard terms' if equipment modernization plan showed 30%+ efficiency gain",
+    "Would change to 'Decline' if raw material costs increased another 20%",
+    "Would change to 'Decline' if largest customer contract was not renewed"
+  ]
+}

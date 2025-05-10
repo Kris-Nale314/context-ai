@@ -1,0 +1,21 @@
+{
+  "name": "ManufacturePro Inc.",
+  "industry": "Manufacturing",
+  "business_type": "Custom Metal Fabrication",
+  "years_in_business": 12,
+  "employees": 73,
+  "location": "Detroit, MI",
+  "ownership_structure": "S-Corp",
+  "management_team_size": 4,
+  "management_experience_years": 20,
+  "customer_count": 45,
+  "largest_customer_percentage": 28,
+  "loan_amount_requested": 750000,
+  "loan_purpose": "Equipment modernization",
+  "loan_term_requested": 7,
+  "collateral_offered": "Equipment and property",
+  "previous_loans": 3,
+  "previous_loans_repaid": 3,
+  "credit_score": "B+",
+  "description": "ManufacturePro specializes in custom metal fabrication for automotive and aerospace industries. While they have a strong history, they face increasing competition from overseas and need to modernize equipment to remain competitive."
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "date": "2023-01-01",
+    "event": "Initial loan application submitted",
+    "category": "application",
+    "type": "info",
+    "description": "Company submitted loan application with basic business information."
+  },
+  {
+    "date": "2023-01-15",
+    "event": "Financial statements requested",
+    "category": "information",
+    "type": "info",
+    "description": "Underwriter requested detailed financial statements for the past 12 months."
+  },
+  {
+    "date": "2023-01-22",
+    "event": "Financial statements received",
+    "category": "information",
+    "type": "info",
+    "description": "Company provided required financial statements showing operational history."
+  },
+  {
+    "date": "2023-01-31",
+    "event": "Customer concentration clarification requested",
+    "category": "information",
+    "type": "warning",
+    "description": "Underwriter requested clarification about 28% revenue from single customer."
+  },
+  {
+    "date": "2023-02-15",
+    "event": "Supply chain disruption reported",
+    "category": "external",
+    "type": "warning",
+    "description": "Industry news reported potential supply chain disruptions affecting raw material costs."
+  },
+  {
+    "date": "2023-03-07",
+    "event": "Updated business plan requested",
+    "category": "information",
+    "type": "info",
+    "description": "Detailed modernization plan and competitive analysis requested to clarify growth strategy."
+  },
+  {
+    "date": "2023-03-27",
+    "event": "Conditional approval issued",
+    "category": "approval",
+    "type": "info",
+    "description": "Conditional approval with additional reporting requirements and slightly higher interest rate."
+  }
+]

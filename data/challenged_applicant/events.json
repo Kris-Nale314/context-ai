@@ -1,0 +1,58 @@
+[
+  {
+    "date": "2023-01-01",
+    "event": "Initial loan application submitted",
+    "category": "application",
+    "type": "info",
+    "description": "Company submitted loan application with basic business information."
+  },
+  {
+    "date": "2023-01-15",
+    "event": "Financial statements requested",
+    "category": "information",
+    "type": "info",
+    "description": "Underwriter requested detailed financial statements for the past 12 months."
+  },
+  {
+    "date": "2023-01-22",
+    "event": "Financial statements received",
+    "category": "information",
+    "type": "info",
+    "description": "Company provided required financial statements showing operational history."
+  },
+  {
+    "date": "2023-01-29",
+    "event": "Management changes disclosed",
+    "category": "company",
+    "type": "negative",
+    "description": "Disclosed that CFO and Operations Director left the company within past 90 days."
+  },
+  {
+    "date": "2023-02-12",
+    "event": "E-commerce impact report published",
+    "category": "external",
+    "type": "negative",
+    "description": "Industry analysis shows physical retailers in sector losing 12% market share annually to e-commerce."
+  },
+  {
+    "date": "2023-02-20",
+    "event": "Late payment on existing loan",
+    "category": "financial",
+    "type": "negative",
+    "description": "Company made 15-day late payment on existing equipment loan."
+  },
+  {
+    "date": "2023-03-12",
+    "event": "Restructuring plan requested",
+    "category": "information",
+    "type": "warning",
+    "description": "Detailed debt restructuring and business turnaround plan requested."
+  },
+  {
+    "date": "2023-04-06",
+    "event": "Application declined",
+    "category": "decision",
+    "type": "negative",
+    "description": "Loan application declined due to declining financial performance and industry outlook."
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "conclusion": "Decline application",
+  "confidence": 0.82,
+  "reasoning_steps": [
+    [
+      "Declining financial performance",
+      "Industry disruption accelerating",
+      "Recent management turnover"
+    ],
+    [
+      "Cash flow insufficient for debt service",
+      "Business model viability concerns",
+      "Insufficient turnaround evidence"
+    ]
+  ],
+  "counterfactuals": [
+    "Would change to 'Approve with modified terms' if significant additional collateral was provided",
+    "Would change to 'Approve with conditions' if comprehensive turnaround plan demonstrated viability",
+    "Would change to 'Request more information' if new management team showed successful retail turnarounds"
+  ]
+}

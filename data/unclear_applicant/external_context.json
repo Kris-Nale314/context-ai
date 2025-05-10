@@ -1,0 +1,80 @@
+{
+  "industry_trends": {
+    "active": true,
+    "reliability": 0.85,
+    "sources": [
+      {
+        "name": "Industry Growth Forecast",
+        "type": "report",
+        "reliability": 0.88,
+        "date": "2023-02-15"
+      },
+      {
+        "name": "Market Size Analysis",
+        "type": "market_research",
+        "reliability": 0.82,
+        "date": "2023-03-02"
+      }
+    ]
+  },
+  "economic_indicators": {
+    "active": true,
+    "reliability": 0.92,
+    "sources": [
+      {
+        "name": "Federal Reserve Interest Rate Guidance",
+        "type": "official",
+        "reliability": 0.95,
+        "date": "2023-01-31"
+      },
+      {
+        "name": "Quarterly GDP Report",
+        "type": "official",
+        "reliability": 0.9,
+        "date": "2023-02-20"
+      }
+    ]
+  },
+  "supply_chain_issues": {
+    "active": true,
+    "reliability": 0.78,
+    "impact": -0.1,
+    "sources": [
+      {
+        "name": "Materials Cost Index",
+        "type": "industry_data",
+        "reliability": 0.85,
+        "date": "2023-02-05",
+        "content": "Raw material costs increased 15% over past quarter."
+      },
+      {
+        "name": "Supply Chain Disruption Report",
+        "type": "news",
+        "reliability": 0.72,
+        "date": "2023-02-25",
+        "content": "Transportation delays affecting 40% of manufacturers in the sector."
+      }
+    ]
+  },
+  "automation_trends": {
+    "active": true,
+    "reliability": 0.8,
+    "impact": 0.15,
+    "sources": [
+      {
+        "name": "Manufacturing Automation Report",
+        "type": "industry_report",
+        "reliability": 0.82,
+        "date": "2023-03-02",
+        "content": "Companies investing in automation seeing 28% efficiency improvements."
+      },
+      {
+        "name": "Industry 4.0 Adoption Study",
+        "type": "academic_research",
+        "reliability": 0.88,
+        "date": "2023-03-17",
+        "content": "Early adopters of smart manufacturing technologies showing 22% cost advantage."
+      }
+    ]
+  }
+}

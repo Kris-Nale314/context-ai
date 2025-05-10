@@ -1,0 +1,21 @@
+{
+  "conclusion": "Approve with standard terms",
+  "confidence": 0.85,
+  "reasoning_steps": [
+    [
+      "Strong financial metrics",
+      "Positive industry outlook",
+      "Experienced management team"
+    ],
+    [
+      "Growth trend confirmed",
+      "Debt service capacity validated",
+      "Market position verified"
+    ]
+  ],
+  "counterfactuals": [
+    "Would change to 'Approve with modified terms' if cash flow decreased by 20%",
+    "Would change to 'Decline' if management team experienced significant turnover",
+    "Would change to 'Request more information' if customer concentration exceeded 25%"
+  ]
+}

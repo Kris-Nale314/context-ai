@@ -1,0 +1,37 @@
+{
+  "Initial Application": {
+    "Financial Statements": 0.85,
+    "Management Background": 0.65,
+    "Customer Contracts": 0.6,
+    "Existing Debt Details": 0.72,
+    "Business Plan": 0.58
+  },
+  "Information Gathering": {
+    "Industry Forecast": 0.7,
+    "Competitive Analysis": 0.65,
+    "Detailed Cash Flow Projections": 0.82,
+    "Customer Concentration Details": 0.75,
+    "Collateral Valuation": 0.68
+  },
+  "Risk Assessment": {
+    "Supply Chain Stability": 0.6,
+    "Key Personnel Background": 0.55,
+    "Technology Infrastructure": 0.5,
+    "Regulatory Compliance Status": 0.58,
+    "Market Share Trend": 0.65
+  },
+  "Decision Point": {
+    "Stress Test Scenarios": 0.72,
+    "Risk Mitigation Options": 0.68,
+    "Additional Collateral Options": 0.6,
+    "Reference Checks": 0.52,
+    "Monitoring Plan": 0.75
+  },
+  "Monitoring Phase": {
+    "Updated Financial Statements": 0.88,
+    "Industry News Updates": 0.7,
+    "Payment Pattern Analysis": 0.82,
+    "Management Changes": 0.65,
+    "Customer Relationship Status": 0.75
+  }
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "date": "2023-01-01",
+    "event": "Initial loan application submitted",
+    "category": "application",
+    "type": "info",
+    "description": "Company submitted loan application with basic business information."
+  },
+  {
+    "date": "2023-01-15",
+    "event": "Financial statements requested",
+    "category": "information",
+    "type": "info",
+    "description": "Underwriter requested detailed financial statements for the past 12 months."
+  },
+  {
+    "date": "2023-01-22",
+    "event": "Financial statements received",
+    "category": "information",
+    "type": "info",
+    "description": "Company provided required financial statements showing operational history."
+  },
+  {
+    "date": "2023-02-05",
+    "event": "New customer contract signed",
+    "category": "company",
+    "type": "positive",
+    "description": "Company secured a significant new customer contract increasing projected revenue by 15%."
+  },
+  {
+    "date": "2023-03-02",
+    "event": "Industry growth report published",
+    "category": "external",
+    "type": "positive",
+    "description": "Industry report shows 18% growth projection for SaaS sector over next 24 months."
+  },
+  {
+    "date": "2023-03-17",
+    "event": "Preliminary approval issued",
+    "category": "approval",
+    "type": "positive",
+    "description": "Based on strong financials and industry outlook, preliminary approval issued."
+  },
+  {
+    "date": "2023-04-01",
+    "event": "Final terms accepted",
+    "category": "approval",
+    "type": "positive",
+    "description": "Company accepted final loan terms with favorable interest rate."
+  }
+]
