@@ -66,6 +66,7 @@ def comparison_card(title, traditional, context_ai):
     </div>
     """, unsafe_allow_html=True)
 
+
 def layer_card(layer_name, what_it_is, what_it_does, why_better):
     """Create a card explaining a specific layer of the Context-AI architecture."""
     # Map layer name to color and icon
@@ -86,8 +87,8 @@ def layer_card(layer_name, what_it_is, what_it_does, why_better):
     color = layer_colors.get(layer_name, COLORS['primary'])
     icon = layer_icons.get(layer_name, "")
     
-    # Create expandable card for the layer
-    with st.expander(f"{icon} {layer_name}", expanded=True):
+    # Create expandable card for the layer - set expanded to False by default
+    with st.expander(f"{icon} {layer_name}", expanded=False):
         col1, col2, col3 = st.columns([1, 1, 1])
         
         with col1:

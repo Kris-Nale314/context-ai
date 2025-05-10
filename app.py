@@ -30,8 +30,14 @@ and adaptive guidance, it transforms how we process, analyze, and draw insights 
 interconnected data.
 """)
 
-# Platform architecture image
-st.image("images/platformLayers.png", use_container_width=True)
+# Platform architecture image - use a container to constrain the width
+image_container = st.container()
+with image_container:
+    # Create a column layout to center and constrain the image width
+    col1, col2, col3 = st.columns([1, 3, 1])
+    with col2:
+        # Display image at 70% of the column width
+        st.image("images/platformLayers.png", use_container_width=True)
 st.caption("The four layers of the Context-AI platform work together to create a comprehensive, evolving understanding.")
 
 # Core challenge section
@@ -91,100 +97,6 @@ layer_card(
     "Rather than simply calculating a risk score, this layer may recommend requesting additional collateral based on specific industry volatility, suggest modified terms that would better match the applicant's cash flow patterns, or identify key questions about their supply chain that would clarify risk factors.",
     "Conventional systems typically provide simplistic risk scores without explanation. Our guidance system provides specific, actionable recommendations with transparent reasoning paths, and continuously updates these recommendations as new information becomes available."
 )
-
-# Featured demo section
-st.markdown("## Interactive Loan Journey Demo")
-
-st.markdown("""
-Experience how Context-AI evolves across a loan application journey. Our interactive demo
-shows how the system builds understanding over time, integrates external context, and provides
-adaptive guidance based on the complete knowledge graph.
-""")
-
-# Cards for different scenarios
-st.subheader("Explore Different Scenarios")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown(f"""
-    <div style="border-left: 4px solid {COLORS['high_confidence']}; 
-                background-color: {COLORS['bg_medium']}; 
-                border-radius: 4px; 
-                padding: 15px; 
-                margin-bottom: 15px;">
-        <h4 style="color: {COLORS['text_primary']}; margin-top: 0;">Strong Applicant</h4>
-        <p style="color: {COLORS['text_primary']};">Tech company with strong financials, established market position, and experienced management team.</p>
-        <a href="/Loan_Journey_-_Strong_Applicant" target="_self">
-            <button style="background-color: {COLORS['high_confidence']}; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                Explore Scenario
-            </button>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown(f"""
-    <div style="border-left: 4px solid {COLORS['medium_confidence']}; 
-                background-color: {COLORS['bg_medium']}; 
-                border-radius: 4px; 
-                padding: 15px; 
-                margin-bottom: 15px;">
-        <h4 style="color: {COLORS['text_primary']}; margin-top: 0;">Unclear Applicant</h4>
-        <p style="color: {COLORS['text_primary']};">Manufacturing business with mixed signals - strong history but in a changing industry environment.</p>
-        <a href="/Loan_Journey_-_Unclear_Applicant" target="_self">
-            <button style="background-color: {COLORS['medium_confidence']}; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                Explore Scenario
-            </button>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col3:
-    st.markdown(f"""
-    <div style="border-left: 4px solid {COLORS['low_confidence']}; 
-                background-color: {COLORS['bg_medium']}; 
-                border-radius: 4px; 
-                padding: 15px; 
-                margin-bottom: 15px;">
-        <h4 style="color: {COLORS['text_primary']}; margin-top: 0;">Challenged Applicant</h4>
-        <p style="color: {COLORS['text_primary']};">Retail business facing industry disruption, margin pressure, and management turnover.</p>
-        <a href="/Loan_Journey_-_Challenged_Applicant" target="_self">
-            <button style="background-color: {COLORS['low_confidence']}; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                Explore Scenario
-            </button>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
-
-# Applications beyond finance
-st.markdown("## Applications Beyond Finance")
-
-st.markdown("""
-While our initial demonstration focuses on loan risk assessment, the Context-AI approach 
-has transformative potential across industries:
-""")
-
-applications = {
-    "Healthcare": "Patient digital twins that incorporate medical history, genetic factors, and treatment responses",
-    "Supply Chain": "Network models that predict disruptions and suggest mitigation strategies",
-    "Research": "Knowledge evolution tracking for scientific discovery and cross-domain connections",
-    "Cybersecurity": "Threat models that evolve based on emerging attack patterns",
-    "Corporate Intelligence": "Connected market signals, competitive movements, and internal metrics"
-}
-
-# Display applications in two columns
-col1, col2 = st.columns(2)
-
-i = 0
-for domain, description in applications.items():
-    if i % 2 == 0:
-        with col1:
-            st.markdown(f"**{domain}**: {description}")
-    else:
-        with col2:
-            st.markdown(f"**{domain}**: {description}")
-    i += 1
 
 # Footer
 st.markdown("---")
