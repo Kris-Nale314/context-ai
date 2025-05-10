@@ -1,0 +1,41 @@
+# Core Streamlit components
+streamlit
+streamlit-extras
+streamlit-card
+streamlit-timeline
+streamlit-agraph
+streamlit-elements
+
+# Data handling
+pandas
+numpy
+openai           
+langchain       
+
+# Graph visualization
+neo4j
+networkx
+plotly
+#PyG
+faker
+PyVis
+
+# UI enhancements
+#st-annotated-text
+#streamlit-option-menu
+#streamlit-toggle-switc
+#streamlit-vertical-slider
+
+# Animation and interactivity
+altair
+pydeck
+
+# Image processing
+Pillow
+
+# Utilities
+python-dotenv
+
+# Optional: Financial data analysis
+ta              
+statsmodels      
