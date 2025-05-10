@@ -31,7 +31,7 @@ interconnected data.
 """)
 
 # Platform architecture image
-st.image("images/platformLayers.png", use_column_width=True)
+st.image("images/platformLayers.png", use_container_width=True)
 st.caption("The four layers of the Context-AI platform work together to create a comprehensive, evolving understanding.")
 
 # Core challenge section
