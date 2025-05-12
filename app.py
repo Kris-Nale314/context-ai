@@ -15,20 +15,7 @@ init_session_state()
 # Header
 header_with_logo()
 
-# Main content
-st.markdown("""
-# Context-AI: Adaptive Intelligence Through Evolving Knowledge Graphs
 
-> *"Because your AI system should be as dynamic as the world it operates in."*
-""")
-
-# Introduction section
-st.markdown("""
-Context-AI is an experimental platform that creates digital twins of entities through evolving 
-knowledge graphs. By combining temporal knowledge representation with contextual integration 
-and adaptive guidance, it transforms how we process, analyze, and draw insights from complex, 
-interconnected data.
-""")
 
 # Platform architecture image - use a container to constrain the width
 image_container = st.container()
@@ -37,8 +24,8 @@ with image_container:
     col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
         # Display image at 70% of the column width
-        st.image("images/platformLayers.png", use_container_width=True)
-st.caption("The four layers of the Context-AI platform work together to create a comprehensive, evolving understanding.")
+        st.image("images/slide1.png", use_container_width=True)
+
 
 # Core challenge section
 st.markdown("## The Challenge: Static Analysis in a Dynamic World")

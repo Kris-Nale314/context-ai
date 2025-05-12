@@ -1,4 +1,4 @@
-# pages/1_Loan_Journey_-_Strong_Applicant.py
+# pages/2_Loan_Journey_-_Strong_Applicant.py
 import streamlit as st
 import pandas as pd
 import numpy as np

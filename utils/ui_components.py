@@ -10,7 +10,7 @@ def header_with_logo():
         st.image("images/logo.png", width=150)
     
     with col2:
-        st.markdown("# Context-AI")
+        st.markdown("# Context-AI: Interactive Presentation & Demo")
         st.markdown("### Adaptive Intelligence Through Evolving Knowledge Graphs")
 
 def concept_card(title, description, icon=None, layer=None):

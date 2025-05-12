@@ -1,91 +1,171 @@
-# pages/1_Understanding_Knowledge_Graphs.py
 import streamlit as st
 import pandas as pd
-import numpy as np
-import networkx as nx
-from utils.theme import setup_page_config, apply_theme, COLORS
-from utils.ui_components import header_with_logo, concept_card
-from utils.demo_data import load_applicant_data, generate_all_data
-from utils.graph_viz import networkx_matplotlib_graph
-from utils.kg_generator import create_initial_knowledge_graph, create_expanded_knowledge_graph
+from streamlit_agraph import agraph, Node, Edge, Config
 
-# Set up page config and theme
-setup_page_config()
-apply_theme()
-
-# Header
-header_with_logo()
+# Page setup
+st.set_page_config(page_title="Understanding Knowledge Graphs", layout="wide")
 
 # Main title
-st.title("Understanding Digital Twins & Knowledge Graphs")
-st.subheader("Why Relationships Matter in Loan Assessment")
+st.title("Understanding Knowledge Graphs")
+st.subheader("The Foundation of Context-AI")
 
-# Introduction section
+# Option to place the slide at the top
+show_slide_at_top = True  # Set to False to show at bottom
+
+if show_slide_at_top:
+    # Display the key slide at the top
+    #st.video("images/kgBasics.gif")
+    
+    st.markdown("""
+    <div style="text-align: center;">
+        <img src="https://raw.githubusercontent.com/Kris-Nale314/context-ai/main/images/kgBasics.gif" width="600">
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
+
+# Introduction
 st.markdown("""
-## Beyond Tables: The Knowledge Graph Advantage
+## What is a Knowledge Graph?
 
-Traditional loan assessment systems store data in flat tables or simple relational databases. 
-While functional, this approach misses the rich web of relationships that truly define an entity. 
-Context-AI takes a fundamentally different approach by representing each loan application as a 
-**knowledge graph** - creating a digital twin that captures not just data points, but the 
-connections between them.
+A knowledge graph represents information as a network of **entities** and their **relationships**, 
+rather than as isolated data points in tables. This approach reveals patterns and insights 
+that would otherwise remain hidden.
+
+Knowledge graphs are the foundation of Context-AI's ability to understand complex, interconnected data.
+Let's explore how they differ from traditional data approaches:
 """)
 
-# Visual comparison between traditional and KG approaches
-col1, col2 = st.columns(2)
+# Create view selector
+view_type = st.radio("Compare approaches:", ["Traditional Database View", "Knowledge Graph View"], horizontal=True)
 
-with col1:
+# Display based on selection
+if view_type == "Traditional Database View":
+    # Display table data
     st.markdown("### Traditional Database Approach")
     
-    # Create sample tabular data
-    traditional_data = pd.DataFrame({
-        "Field": ["Company Name", "Industry", "Revenue", "Years in Business", "Loan Amount", 
-                 "Credit Score", "Profit Margin", "Purpose"],
-        "Value": ["TechInnovate Solutions", "Software Development", "$2,400,000", "7", 
-                 "$500,000", "A", "18%", "Expansion into new markets"]
-    })
-    
-    st.table(traditional_data)
-    
     st.markdown("""
-    **Limitations:**
-    - Data points are isolated
-    - Relationships are implicit or missing
-    - Context is lost or disconnected
-    - Difficult to see patterns across domains
-    - Static representation of information
+    In traditional database systems, data is stored in separate tables with relationships 
+    defined by foreign keys. This creates a rigid structure where context is often lost.
     """)
-
-with col2:
+    
+    # Column layout for tables and limitations
+    col1, col2 = st.columns([3, 2])
+    
+    with col1:
+        # Companies table
+        st.markdown("**Companies Table:**")
+        companies_df = pd.DataFrame({
+            "CompanyID": [1001],
+            "Name": ["TechInnovate"],
+            "Industry": ["Software"],
+            "YearsInBusiness": [7]
+        })
+        st.dataframe(companies_df, use_container_width=True)
+        
+        # Financials table
+        st.markdown("**Financials Table:**")
+        financials_df = pd.DataFrame({
+            "FinancialID": [5001],
+            "CompanyID": [1001],
+            "Revenue": ["$2.4M"],
+            "ProfitMargin": ["18%"]
+        })
+        st.dataframe(financials_df, use_container_width=True)
+        
+        # Loans table
+        st.markdown("**Loans Table:**")
+        loans_df = pd.DataFrame({
+            "LoanID": [8001],
+            "CompanyID": [1001],
+            "Amount": ["$500K"],
+            "Purpose": ["Expansion"]
+        })
+        st.dataframe(loans_df, use_container_width=True)
+    
+    with col2:
+        st.markdown("**Key Limitations:**")
+        st.markdown("""
+        - Data points are isolated in separate tables
+        - Relationships exist only as IDs linking tables
+        - Context and meaning are implicit, not explicit
+        - Cross-domain insights are difficult to discover
+        - Static representation that doesn't evolve naturally
+        - Difficult to incorporate external context
+        """)
+    
+else:
+    # Display knowledge graph
     st.markdown("### Knowledge Graph Approach")
     
-    # Try to load a sample company profile to use
-    try:
-        applicant_data = load_applicant_data("strong_applicant")
-        if not applicant_data:
-            generate_all_data()
-            applicant_data = load_applicant_data("strong_applicant")
-        
-        company = applicant_data["company_profile"]
-        
-        # Create a simple KG as an example
-        G = create_initial_knowledge_graph(company)
-        
-        # Visualize the knowledge graph
-        networkx_matplotlib_graph(G, height=300)
-    except Exception as e:
-        st.error(f"Error creating example graph: {e}")
-        # Fallback text description
-        st.markdown("*Visualization would show a connected graph of company attributes and relationships*")
-    
     st.markdown("""
-    **Advantages:**
-    - Explicit relationship modeling
-    - Context is preserved
-    - Insights emerge from connections
-    - Dynamic representation evolves over time
-    - Cross-domain pattern recognition
+    Knowledge graphs represent data as an interconnected network of entities and relationships.
+    This preserves context and allows insights to emerge from connections.
+    
+    Try moving nodes around to explore the relationships:
     """)
+    
+    # Create nodes
+    nodes = [
+        Node(id="TechInnovate", label="TechInnovate", size=30, color="#4CAF50"),
+        Node(id="Software", label="Software Industry", size=20, color="#2196F3"),
+        Node(id="Revenue", label="Revenue: $2.4M", size=15, color="#9C27B0"),
+        Node(id="Margin", label="Profit: 18%", size=15, color="#9C27B0"),
+        Node(id="Loan", label="Loan: $500K", size=20, color="#FF9800"),
+        Node(id="Expansion", label="Purpose: Expansion", size=15, color="#FF9800"),
+        Node(id="Market", label="Market Growth: 15%", size=15, color="#2196F3"),
+        Node(id="Competition", label="Low Competition", size=15, color="#2196F3")
+    ]
+    
+    # Create edges
+    edges = [
+        Edge(source="TechInnovate", target="Software", label="operates in"),
+        Edge(source="TechInnovate", target="Revenue", label="has"),
+        Edge(source="TechInnovate", target="Margin", label="has"),
+        Edge(source="TechInnovate", target="Loan", label="requests"),
+        Edge(source="Loan", target="Expansion", label="for"),
+        Edge(source="Software", target="Revenue", label="influences"),
+        Edge(source="Software", target="Market", label="experiencing"),
+        Edge(source="Market", target="Expansion", label="supports"),
+        Edge(source="Software", target="Competition", label="has"),
+        Edge(source="Competition", target="Margin", label="allows")
+    ]
+    
+    # Create configuration
+    config = Config(
+        width=700,
+        height=500,
+        directed=True,
+        physics=True,
+        hierarchical=False,
+        nodeHighlightBehavior=True,
+        highlightColor="#F7A7A6",
+        collapsible=False
+    )
+    
+    # Render the graph
+    agraph(nodes=nodes, edges=edges, config=config)
+    
+    # Add explanation of the visualization
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**Key Advantages:**")
+        st.markdown("""
+        - Relationships are explicit and meaningful
+        - Context is preserved across domains
+        - Insights emerge from connections
+        - Cross-domain patterns become visible
+        - The graph can evolve organically as new information arrives
+        """)
+    
+    with col2:
+        st.markdown("**In this example:**")
+        st.markdown("""
+        - Industry trends directly connect to company financials
+        - Market growth supports expansion purpose (implicit in traditional DB)
+        - Low competition explains high profit margins (cross-domain insight)
+        - The graph can easily add new relationships as they emerge
+        """)
 
 # Anatomy of a Knowledge Graph
 st.markdown("""
@@ -93,436 +173,307 @@ st.markdown("""
 
 Knowledge graphs consist of three main elements:
 
-1. **Nodes (Entities)**: Individual data points like companies, financial metrics, or industry factors
+1. **Nodes (Entities)**: Individual data points like companies, people, or concepts
 2. **Edges (Relationships)**: Connections between nodes showing how they relate to each other
-3. **Properties**: Attributes that describe nodes and relationships, including confidence scores
+3. **Properties**: Attributes that describe nodes and relationships
 """)
 
-# Simple node-edge explanation with visual
-st.markdown("""
-### Basic Structure
-""")
+# Simple KG structure example
+st.markdown("### Basic Structure")
 
-# Create a simple educational example
-example_G = nx.Graph()
+# Create a simple educational graph
+basic_nodes = [
+    Node(id="Company", label="Company", size=30, color="#4CAF50", title="The central entity"),
+    Node(id="Financial", label="Financial Metrics", size=20, color="#9C27B0", title="Financial information"),
+    Node(id="Industry", label="Industry", size=20, color="#2196F3", title="Industry context"),
+    Node(id="Management", label="Management", size=20, color="#9C27B0", title="Company leadership"),
+    Node(id="Revenue", label="Revenue", size=15, color="#9C27B0", title="Annual revenue"),
+    Node(id="CEO", label="CEO", size=15, color="#9C27B0", title="Chief Executive"),
+    Node(id="Growth", label="Growth Rate", size=15, color="#2196F3", title="Industry growth")
+]
 
-# Add main node
-example_G.add_node("Company", size=30, color=COLORS['digital_twin'], title="The Entity")
+basic_edges = [
+    Edge(source="Company", target="Financial", label="has"),
+    Edge(source="Company", target="Industry", label="part of"),
+    Edge(source="Company", target="Management", label="led by"),
+    Edge(source="Financial", target="Revenue", label="includes"),
+    Edge(source="Management", target="CEO", label="includes"),
+    Edge(source="Industry", target="Growth", label="has"),
+    Edge(source="Growth", target="Revenue", label="influences")
+]
 
-# Add related nodes
-example_G.add_node("Financial Metrics", size=20, color=COLORS['primary'], title="Financial Data")
-example_G.add_node("Management Team", size=20, color=COLORS['primary'], title="Leadership Info")
-example_G.add_node("Industry", size=20, color=COLORS['external'], title="External Context")
-
-# Add edges
-example_G.add_edge("Company", "Financial Metrics", width=2, title="has financials")
-example_G.add_edge("Company", "Management Team", width=2, title="led by")
-example_G.add_edge("Company", "Industry", width=2, title="operates in")
-
-# Add specific data points
-example_G.add_node("Revenue: $2.4M", size=15, color=COLORS['primary'], title="Annual Revenue")
-example_G.add_node("CEO: Alice Smith", size=15, color=COLORS['primary'], title="Chief Executive")
-example_G.add_node("SaaS Sector", size=15, color=COLORS['external'], title="Software as a Service")
-
-# Connect them
-example_G.add_edge("Financial Metrics", "Revenue: $2.4M", width=1)
-example_G.add_edge("Management Team", "CEO: Alice Smith", width=1)
-example_G.add_edge("Industry", "SaaS Sector", width=1)
-
-# Add a cross-connection
-example_G.add_edge("SaaS Sector", "Revenue: $2.4M", width=1, color=COLORS['edge_default'], 
-                  title="influences")
-
-# Visualize
-networkx_matplotlib_graph(example_G, height=300)
+basic_config = Config(
+    width=700,
+    height=300,
+    directed=True,
+    physics=True,
+    hierarchical=False
+)
 
 st.markdown("""
-In this simple example:
-- **Nodes** represent entities like the company and its attributes
-- **Edges** show how these entities relate to each other
-- Note the cross-connection between industry sector and revenue (showing how external context influences financial metrics)
+The following simple graph shows the basic structure of a knowledge graph. 
+Notice how different types of information connect to form a meaningful network:
 """)
 
-# Interactive Knowledge Graph Growth Demo
+agraph(nodes=basic_nodes, edges=basic_edges, config=basic_config)
+
 st.markdown("""
-## How Knowledge Graphs Grow: Building a Digital Twin
-
-One of the most powerful aspects of knowledge graphs is how they evolve as more information 
-becomes available. Let's see how a digital twin builds up over the loan journey:
+In this example:
+- **Nodes** represent different entities and concepts
+- **Edges** show meaningful relationships between nodes
+- **Cross-connections** (like "Growth influences Revenue") reveal insights that would be difficult to see in traditional databases
 """)
 
-# Create tabs for different stages of KG growth
-tab1, tab2, tab3 = st.tabs(["Initial Application", "After Financial Review", "With External Context"])
-
-# Try to load sample data
-try:
-    applicant_data = load_applicant_data("strong_applicant")
-    company = applicant_data["company_profile"]
-    financial_data = applicant_data["financial_data"]
-    
-    with tab1:
-        st.markdown("### Stage 1: Basic Application Information")
-        st.markdown("""
-        When a loan application is first submitted, the knowledge graph starts with basic information:
-        company details, loan request, and fundamental relationships.
-        """)
-        
-        # Create initial knowledge graph
-        basic_G = create_initial_knowledge_graph(company)
-        networkx_matplotlib_graph(basic_G, height=350)
-        
-        st.markdown("""
-        **Node Count:** {} nodes, {} edges
-        
-        Even at this early stage, relationships are explicit rather than implicit. The graph shows
-        how the company connects to its industry, the loan request details, and basic credit history.
-        """.format(len(basic_G.nodes), len(basic_G.edges)))
-    
-    with tab2:
-        st.markdown("### Stage 2: Financial Information Added")
-        st.markdown("""
-        As financial statements are reviewed, the knowledge graph expands to include detailed financial
-        metrics and their relationships to each other and to the company.
-        """)
-        
-        # Create expanded knowledge graph
-        expanded_G = create_expanded_knowledge_graph(company, financial_data.iloc[2])
-        networkx_matplotlib_graph(expanded_G, height=350)
-        
-        st.markdown("""
-        **Node Count:** {} nodes, {} edges ({}% increase)
-        
-        Now financial metrics are connected, showing relationships between revenue, profit margins, and
-        industry-specific metrics. These connections enable pattern recognition across financial dimensions.
-        """.format(len(expanded_G.nodes), len(expanded_G.edges), 
-                 round((len(expanded_G.edges) - len(basic_G.edges)) / len(basic_G.edges) * 100)))
-    
-    with tab3:
-        st.markdown("### Stage 3: External Context Integration")
-        st.markdown("""
-        The knowledge graph continues to evolve as external context is integrated, connecting
-        the company to market trends, competitors, and economic factors.
-        """)
-        
-        # Create a more comprehensive graph with external context
-        # For this example, we'll manually add some external context nodes
-        comprehensive_G = expanded_G.copy()
-        
-        # Add external context group
-        comprehensive_G.add_node("External Context", size=25, color=COLORS['external'], 
-                               title="External Context")
-        comprehensive_G.add_edge(company['name'], "External Context", width=2)
-        
-        # Add external factors
-        external_factors = [
-            "Industry Growth Trend",
-            "Technology Adoption Rate",
-            "Competitive Landscape",
-            "Regulatory Environment"
-        ]
-        
-        for factor in external_factors:
-            comprehensive_G.add_node(factor, size=15, color=COLORS['external'], title=factor)
-            comprehensive_G.add_edge("External Context", factor, width=1)
-        
-        # Add cross-connections to show how external factors influence internal metrics
-        comprehensive_G.add_edge("Industry Growth Trend", "SaaS Metrics", width=1, 
-                              color=COLORS['edge_default'])
-        comprehensive_G.add_edge("Technology Adoption Rate", "Revenue: $2,400,000", width=1, 
-                              color=COLORS['edge_default'])
-        
-        networkx_matplotlib_graph(comprehensive_G, height=350)
-        
-        st.markdown("""
-        **Node Count:** {} nodes, {} edges ({}% increase from initial)
-        
-        The knowledge graph now integrates external context, creating connections between outside
-        factors and internal metrics. These connections reveal how the company fits into its broader
-        environment and how external factors influence its performance.
-        """.format(len(comprehensive_G.nodes), len(comprehensive_G.edges), 
-                 round((len(comprehensive_G.edges) - len(basic_G.edges)) / len(basic_G.edges) * 100)))
-except Exception as e:
-    st.error(f"Error loading sample data: {e}")
-    st.markdown("*Example visualizations would show the knowledge graph growing in complexity across stages*")
-
-# Explain key innovations of using KGs
+# How Knowledge Graphs Grow
 st.markdown("""
-## Key Innovations of the Knowledge Graph Approach
+## How Knowledge Graphs Evolve: Building a Digital Twin
 
-The knowledge graph approach offers several fundamental advantages over traditional data models:
+One of the most powerful aspects of knowledge graphs is how they evolve over time, 
+continuously incorporating new information and connections. This makes them ideal for 
+building **digital twins** - virtual representations of real-world entities that grow and change.
+
+In Context-AI, we use knowledge graphs to create digital twins of entities like companies, 
+representing not just their attributes but their complex relationships to the world around them.
 """)
 
-innovation_cols = st.columns(2)
+# Evolution stages
+stage = st.select_slider(
+    "See how a knowledge graph grows over time:",
+    options=["Initial Data", "Added Financials", "External Context", "Complete Picture"]
+)
 
-with innovation_cols[0]:
-    concept_card(
-        "Relationship-First Design",
-        """
-        Traditional systems store data as records with foreign keys. Knowledge graphs prioritize relationships as first-class entities, making connections explicit rather than implicit. This reveals patterns invisible to traditional analysis.
-        """,
-        layer="digital_twin"
-    )
-    
-    concept_card(
-        "Network Effects in Data",
-        """
-        Each new piece of information adds value not just by itself, but by creating new connections with existing data. This creates compounding returns as the knowledge graph grows, unlike linear improvements in traditional systems.
-        """,
-        layer="digital_twin"
-    )
-
-with innovation_cols[1]:
-    concept_card(
-        "Context Preservation",
-        """
-        Traditional systems often lose context when storing data. Knowledge graphs maintain the essential context around each data point, preserving its meaning and relevance to other information.
-        """,
-        layer="digital_twin"
-    )
-    
-    concept_card(
-        "Cross-Domain Integration",
-        """
-        Knowledge graphs easily connect information across different domains - financial metrics, management details, market factors - creating a unified representation that spans traditional data silos.
-        """,
-        layer="digital_twin"
-    )
-
-# Comparative example: Traditional vs. KG approach
-st.markdown("""
-## Real-World Example: Detecting Customer Concentration Risk
-
-Let's see how a traditional approach and the knowledge graph approach would differ when 
-analyzing a manufacturing company with customer concentration risk:
-""")
-
-example_cols = st.columns(2)
-
-with example_cols[0]:
-    st.markdown("### Traditional Approach")
-    
-    # Create sample customer data
-    customers_data = pd.DataFrame({
-        "Customer ID": ["C001", "C002", "C003", "C004", "C005", "Others"],
-        "Revenue": ["$210,000", "$84,000", "$63,000", "$42,000", "$21,000", "$80,000"],
-        "% of Total": ["42%", "16.8%", "12.6%", "8.4%", "4.2%", "16%"]
-    })
-    
-    st.dataframe(customers_data)
-    
-    st.markdown("""
-    **Process:**
-    1. Store customer revenue in database table
-    2. Calculate percentage of total revenue
-    3. Manually identify customers above threshold
-    4. Separately analyze industry benchmarks
-    5. Manually assess risk implications
-    
-    **Limitations:**
-    - Connection to industry standards is separate
-    - Risk assessment requires manual judgment
-    - No automatic connection to similar past cases
-    - Temporal trends require separate analysis
-    - No integration with external factors affecting customers
-    """)
-
-with example_cols[1]:
-    st.markdown("### Knowledge Graph Approach")
-    
-    # Create a KG showing customer concentration
-    concentration_G = nx.Graph()
-    
-    # Add main company node
-    concentration_G.add_node("ManufacturePro", size=30, color=COLORS['digital_twin'], 
-                           title="Manufacturing Company")
-    
-    # Add customers group
-    concentration_G.add_node("Customers", size=20, color=COLORS['primary'], title="Customer Base")
-    concentration_G.add_edge("ManufacturePro", "Customers", width=2)
-    
-    # Add individual customers
-    customers = [
-        {"id": "Customer A", "revenue": 210000, "percentage": 0.42},
-        {"id": "Customer B", "revenue": 84000, "percentage": 0.168},
-        {"id": "Customer C", "revenue": 63000, "percentage": 0.126},
-        {"id": "Customer D", "revenue": 42000, "percentage": 0.084},
-        {"id": "Customer E", "revenue": 21000, "percentage": 0.042},
-        {"id": "Others", "revenue": 80000, "percentage": 0.16}
+if stage == "Initial Data":
+    # Show simplest graph
+    simple_nodes = [
+        Node(id="TechInnovate", label="TechInnovate", size=30, color="#4CAF50"),
+        Node(id="Software", label="Software Industry", size=20, color="#2196F3"),
+        Node(id="Founded", label="Founded: 2016", size=15, color="#9C27B0"),
+        Node(id="Location", label="Location: Austin", size=15, color="#9C27B0")
     ]
     
-    for customer in customers:
-        # Size node based on percentage
-        size = 10 + (customer["percentage"] * 50)
-        
-        # Color based on concentration risk
-        if customer["percentage"] > 0.25:
-            color = COLORS['low_confidence']  # Risk color
-        elif customer["percentage"] > 0.15:
-            color = COLORS['medium_confidence']  # Warning color
-        else:
-            color = COLORS['primary']  # Normal color
-        
-        # Add node
-        node_name = f"{customer['id']}: {customer['percentage']*100:.1f}%"
-        concentration_G.add_node(node_name, size=size, color=color, 
-                               title=f"${customer['revenue']:,} ({customer['percentage']*100:.1f}%)")
-        concentration_G.add_edge("Customers", node_name, width=1 + (customer["percentage"] * 5))
-    
-    # Add risk assessment
-    concentration_G.add_node("Risk Assessment", size=20, color=COLORS['guidance'], title="Risk Evaluation")
-    concentration_G.add_edge("ManufacturePro", "Risk Assessment", width=2)
-    
-    # Add specific risk factor
-    concentration_G.add_node("Customer Concentration Risk", size=15, color=COLORS['low_confidence'], 
-                           title="High concentration with Customer A")
-    concentration_G.add_edge("Risk Assessment", "Customer Concentration Risk", width=2)
-    
-    # Connect high concentration customer to risk
-    concentration_G.add_edge("Customer A: 42.0%", "Customer Concentration Risk", width=2, 
-                           color=COLORS['low_confidence'])
-    
-    # Add industry benchmark
-    concentration_G.add_node("Industry Benchmark: 20%", size=15, color=COLORS['external'], 
-                           title="Manufacturing industry recommendation")
-    concentration_G.add_edge("Customer Concentration Risk", "Industry Benchmark: 20%", width=1)
-    
-    # Add similar past cases
-    concentration_G.add_node("Similar Past Cases", size=15, color=COLORS['temporal'], 
-                           title="Historical patterns")
-    concentration_G.add_edge("Customer Concentration Risk", "Similar Past Cases", width=1)
-    
-    # Add mitigation recommendation
-    concentration_G.add_node("Diversification Plan", size=15, color=COLORS['guidance'], 
-                           title="Customer acquisition strategy")
-    concentration_G.add_edge("Risk Assessment", "Diversification Plan", width=1)
-    
-    # Visualize
-    networkx_matplotlib_graph(concentration_G, height=400)
+    simple_edges = [
+        Edge(source="TechInnovate", target="Software", label="operates in"),
+        Edge(source="TechInnovate", target="Founded", label="was"),
+        Edge(source="TechInnovate", target="Location", label="based in")
+    ]
     
     st.markdown("""
-    **Process:**
-    1. Automatically detect concentration patterns in knowledge graph
-    2. Automatically connect to industry benchmarks
-    3. Link to similar historical cases and outcomes
-    4. Integrate with external factors affecting key customers
-    5. Generate specific recommendations based on patterns
+    ### Stage 1: Basic Information
     
-    **Advantages:**
-    - Risk patterns automatically emerge from the graph structure
-    - Industry context is integrated directly in the knowledge model
-    - Similar historical cases provide context for assessment
-    - Connections show specific mitigation strategies
-    - Risk factors link to specific data points, creating transparency
+    The digital twin begins with basic identifying information about the entity.
+    Even at this stage, the knowledge graph represents relationships explicitly.
+    """)
+    
+elif stage == "Added Financials":
+    # Show graph with financial data
+    simple_nodes = [
+        Node(id="TechInnovate", label="TechInnovate", size=30, color="#4CAF50"),
+        Node(id="Software", label="Software Industry", size=20, color="#2196F3"),
+        Node(id="Founded", label="Founded: 2016", size=15, color="#9C27B0"),
+        Node(id="Location", label="Location: Austin", size=15, color="#9C27B0"),
+        Node(id="Revenue", label="Revenue: $2.4M", size=15, color="#9C27B0"),
+        Node(id="Margin", label="Profit: 18%", size=15, color="#9C27B0"),
+        Node(id="Financials", label="Financial Metrics", size=20, color="#9C27B0"),
+        Node(id="CAC", label="CAC: $1,200", size=15, color="#9C27B0"),
+        Node(id="LTV", label="LTV: $6,500", size=15, color="#9C27B0")
+    ]
+    
+    simple_edges = [
+        Edge(source="TechInnovate", target="Software", label="operates in"),
+        Edge(source="TechInnovate", target="Founded", label="was"),
+        Edge(source="TechInnovate", target="Location", label="based in"),
+        Edge(source="TechInnovate", target="Financials", label="has"),
+        Edge(source="Financials", target="Revenue", label="includes"),
+        Edge(source="Financials", target="Margin", label="includes"),
+        Edge(source="Financials", target="CAC", label="includes"),
+        Edge(source="Financials", target="LTV", label="includes"),
+        Edge(source="Software", target="CAC", label="influences")
+    ]
+    
+    st.markdown("""
+    ### Stage 2: Financial Information Added
+    
+    As financial data is analyzed, the knowledge graph expands to include detailed metrics.
+    Notice how industry-specific metrics (like CAC and LTV for SaaS) are connected to the 
+    industry node, showing context-awareness.
+    """)
+    
+elif stage == "External Context":
+    # Show graph with external context
+    simple_nodes = [
+        Node(id="TechInnovate", label="TechInnovate", size=30, color="#4CAF50"),
+        Node(id="Software", label="Software Industry", size=20, color="#2196F3"),
+        Node(id="Founded", label="Founded: 2016", size=15, color="#9C27B0"),
+        Node(id="Location", label="Location: Austin", size=15, color="#9C27B0"),
+        Node(id="Revenue", label="Revenue: $2.4M", size=15, color="#9C27B0"),
+        Node(id="Margin", label="Profit: 18%", size=15, color="#9C27B0"),
+        Node(id="Financials", label="Financial Metrics", size=20, color="#9C27B0"),
+        Node(id="CAC", label="CAC: $1,200", size=15, color="#9C27B0"),
+        Node(id="LTV", label="LTV: $6,500", size=15, color="#9C27B0"),
+        Node(id="Market", label="Market Growth: 15%", size=15, color="#2196F3"),
+        Node(id="Trend", label="Tech Investment", size=15, color="#2196F3"),
+        Node(id="External", label="External Context", size=20, color="#2196F3")
+    ]
+    
+    simple_edges = [
+        Edge(source="TechInnovate", target="Software", label="operates in"),
+        Edge(source="TechInnovate", target="Founded", label="was"),
+        Edge(source="TechInnovate", target="Location", label="based in"),
+        Edge(source="TechInnovate", target="Financials", label="has"),
+        Edge(source="Financials", target="Revenue", label="includes"),
+        Edge(source="Financials", target="Margin", label="includes"),
+        Edge(source="Financials", target="CAC", label="includes"),
+        Edge(source="Financials", target="LTV", label="includes"),
+        Edge(source="Software", target="CAC", label="influences"),
+        Edge(source="Software", target="External", label="has"),
+        Edge(source="External", target="Market", label="includes"),
+        Edge(source="External", target="Trend", label="includes"),
+        Edge(source="Market", target="Revenue", label="influences"),
+        Edge(source="Trend", target="LTV", label="enhances")
+    ]
+    
+    st.markdown("""
+    ### Stage 3: External Context Integration
+    
+    External market context is now connected to the digital twin, showing how 
+    industry trends and market conditions influence specific company metrics.
+    
+    These connections allow the system to understand, for example, that strong SaaS market 
+    growth positively impacts the company's revenue potential.
+    """)
+    
+else:  # Complete Picture
+    # Show most complex graph
+    simple_nodes = [
+        Node(id="TechInnovate", label="TechInnovate", size=30, color="#4CAF50"),
+        Node(id="Software", label="Software Industry", size=20, color="#2196F3"),
+        Node(id="Founded", label="Founded: 2016", size=15, color="#9C27B0"),
+        Node(id="Location", label="Location: Austin", size=15, color="#9C27B0"),
+        Node(id="Revenue", label="Revenue: $2.4M", size=15, color="#9C27B0"),
+        Node(id="Margin", label="Profit: 18%", size=15, color="#9C27B0"),
+        Node(id="Financials", label="Financial Metrics", size=20, color="#9C27B0"),
+        Node(id="CAC", label="CAC: $1,200", size=15, color="#9C27B0"),
+        Node(id="LTV", label="LTV: $6,500", size=15, color="#9C27B0"),
+        Node(id="Market", label="Market Growth: 15%", size=15, color="#2196F3"),
+        Node(id="Trend", label="Tech Investment", size=15, color="#2196F3"),
+        Node(id="External", label="External Context", size=20, color="#2196F3"),
+        Node(id="Risk", label="Risk Assessment", size=20, color="#FFC107"),
+        Node(id="FinRisk", label="Financial Risk: Low", size=15, color="#FFC107"),
+        Node(id="MktRisk", label="Market Risk: Low", size=15, color="#FFC107"),
+        Node(id="Recommend", label="Recommendation", size=20, color="#FFC107"),
+        Node(id="Approve", label="Approve Loan", size=15, color="#FFC107")
+    ]
+    
+    simple_edges = [
+        Edge(source="TechInnovate", target="Software", label="operates in"),
+        Edge(source="TechInnovate", target="Founded", label="was"),
+        Edge(source="TechInnovate", target="Location", label="based in"),
+        Edge(source="TechInnovate", target="Financials", label="has"),
+        Edge(source="Financials", target="Revenue", label="includes"),
+        Edge(source="Financials", target="Margin", label="includes"),
+        Edge(source="Financials", target="CAC", label="includes"),
+        Edge(source="Financials", target="LTV", label="includes"),
+        Edge(source="Software", target="CAC", label="influences"),
+        Edge(source="Software", target="External", label="has"),
+        Edge(source="External", target="Market", label="includes"),
+        Edge(source="External", target="Trend", label="includes"),
+        Edge(source="Market", target="Revenue", label="influences"),
+        Edge(source="Trend", target="LTV", label="enhances"),
+        Edge(source="TechInnovate", target="Risk", label="has"),
+        Edge(source="Risk", target="FinRisk", label="includes"),
+        Edge(source="Risk", target="MktRisk", label="includes"),
+        Edge(source="Financials", target="FinRisk", label="informs"),
+        Edge(source="External", target="MktRisk", label="informs"),
+        Edge(source="Risk", target="Recommend", label="leads to"),
+        Edge(source="Recommend", target="Approve", label="suggests")
+    ]
+    
+    st.markdown("""
+    ### Stage 4: Complete Assessment
+    
+    The complete digital twin now includes risk assessment and recommendations, 
+    with clear connections showing how each conclusion is supported by evidence.
+    
+    This transparent reasoning path helps explain why specific recommendations are made,
+    connecting data directly to decisions.
     """)
 
-# Technical implementation insights
-st.markdown("""
-## Technical Implementation Insights
+evolution_config = Config(
+    width=700,
+    height=500,
+    directed=True,
+    physics=True,
+    hierarchical=False
+)
 
-The Digital Twin approach in Context-AI is implemented through several technical innovations:
+agraph(nodes=simple_nodes, edges=simple_edges, config=evolution_config)
+
+# Key benefits
+st.markdown("""
+## Key Benefits of the Knowledge Graph Approach
+
+Knowledge graphs provide several fundamental advantages that make them ideal for Context-AI:
 """)
 
-tech_cols = st.columns(2)
+ben_col1, ben_col2 = st.columns(2)
 
-with tech_cols[0]:
+with ben_col1:
     st.markdown("""
-    ### Knowledge Graph Implementation
+    ### Relationship-First Design
+    Traditional systems store data as isolated records. Knowledge graphs prioritize relationships as 
+    first-class entities, making connections explicit rather than implicit. This reveals patterns that 
+    remain invisible in traditional analysis.
     
-    - **Graph Database Backend**: Specialized storage optimized for relationship queries
-    - **Triple-level Versioning**: Each subject-predicate-object relationship carries temporal attributes
-    - **Confidence Scoring**: Every relationship has confidence metadata based on source reliability
-    - **Property Graph Model**: Nodes and edges have rich property sets for detailed modeling
-    - **Semantic Typing**: Entities and relationships follow consistent ontology patterns
+    ### Network Effects in Data
+    Each new piece of information adds value not just by itself, but by creating new connections with 
+    existing data. This creates compounding returns as the knowledge graph grows, unlike the linear 
+    improvements seen in traditional systems.
     """)
 
-with tech_cols[1]:
+with ben_col2:
     st.markdown("""
-    ### Integration Approaches
+    ### Context Preservation
+    Traditional systems often lose context when storing data. Knowledge graphs maintain the essential 
+    context around each data point, preserving its meaning and relevance to other information.
     
-    - **Entity Resolution**: Automated matching of entities across different sources
-    - **Semantic Alignment**: Mapping between different vocabularies and schemas
-    - **Incremental Updates**: Efficient graph updates when new information arrives
-    - **Relationship Inference**: Automatic discovery of implicit relationships
-    - **Confidence Propagation**: Updates to fact confidence propagate through inference chains
+    ### Cross-Domain Integration
+    Knowledge graphs easily connect information across different domains - financial metrics, management details, 
+    market factors - creating a unified representation that spans traditional data silos.
     """)
 
-# Value creation
+# Next steps
 st.markdown("""
-## Value Creation: How Digital Twins Transform Loan Assessment
+## From Knowledge Graphs to Digital Twins
 
-The knowledge graph approach creates value through several key mechanisms:
+Now that you understand the fundamentals of knowledge graphs, the next step is to explore how 
+Context-AI uses them to create comprehensive digital twins that evolve over time.
+
+In the next section, we'll explore how digital twins grow and change, incorporating temporal 
+intelligence and external context to provide deeper insights.
 """)
 
-value_cols = st.columns(3)
-
-with value_cols[0]:
-    st.markdown("""
-    ### 1. Pattern Recognition
-    
-    - Identify risk and opportunity patterns invisible in traditional systems
-    - Detect subtle connections between seemingly unrelated factors
-    - Recognize patterns that span internal and external data
-    - Find similarities to past cases with known outcomes
-    """)
-
-with value_cols[1]:
-    st.markdown("""
-    ### 2. Contextual Intelligence
-    
-    - Evaluate entities within their full context
-    - Understand how external factors influence specific metrics
-    - Maintain the meaning and relevance of each data point
-    - Preserve the "why" behind recommendations
-    """)
-
-with value_cols[2]:
-    st.markdown("""
-    ### 3. Adaptive Learning
-    
-    - Continuously refine the knowledge model as new information arrives
-    - Learn patterns that improve future assessments
-    - Build cumulative intelligence that grows over time
-    - Adapt to changing conditions in different industries
-    """)
-
-# Call to action
+# CTA button for next section
 st.markdown("""
-## Experience Digital Twins in Action
-
-Now that you understand the power of knowledge graphs and digital twins, explore how they work
-in different loan scenarios:
-""")
-
-cta_cols = st.columns(2)
-
-with cta_cols[0]:
-    st.markdown(f"""
-    <a href="/Loan_Journey_-_Strong_Applicant" target="_self">
-        <div style="background-color: {COLORS['bg_medium']}; padding: 15px; border-radius: 5px; text-align: center; 
-                    border-left: 4px solid {COLORS['high_confidence']};">
-            <h4 style="color: {COLORS['text_primary']};">Strong Applicant Journey</h4>
-            <p style="color: {COLORS['text_secondary']};">See how the digital twin evolves for a strong SaaS company</p>
-        </div>
+<div style="text-align: center; margin-top: 30px;">
+    <a href="/02_Digital_Twins" target="_self" style="
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;">
+        Continue to Digital Twins →
     </a>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
-with cta_cols[1]:
-    st.markdown(f"""
-    <a href="/Loan_Journey_-_Unclear_Applicant" target="_self">
-        <div style="background-color: {COLORS['bg_medium']}; padding: 15px; border-radius: 5px; text-align: center;
-                    border-left: 4px solid {COLORS['medium_confidence']};">
-            <h4 style="color: {COLORS['text_primary']};">Unclear Applicant Journey</h4>
-            <p style="color: {COLORS['text_secondary']};">Explore how mixed signals are handled for a manufacturing company</p>
-        </div>
-    </a>
-    """, unsafe_allow_html=True)
-
-# Additional resources
-st.markdown("""
-## Further Reading
-
-- [Knowledge Graphs: Fundamentals, Techniques, and Applications](https://www.researchgate.net/publication/332123330_Knowledge_Graphs_-_Fundamentals_Techniques_and_Applications)
-- [Knowledge Graphs in Natural Language Processing @ACL 2020](https://github.com/kracr/kg-tutorial-acl-2020)
-- [A Comprehensive Survey on Knowledge Graph Embeddings](https://arxiv.org/abs/2206.04420)
-- [Temporal Knowledge Graphs](https://arxiv.org/abs/2201.08236)
-""")
+# Option to place the slide at the bottom
+if not show_slide_at_top:
+    st.markdown("---")
+    st.markdown("## Knowledge Graph Foundation")
+    st.image("images/kgSlide.png", use_column_width=True)
