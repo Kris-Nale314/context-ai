@@ -240,22 +240,10 @@ if st.session_state.show_external:
     </div>
     """, unsafe_allow_html=True)
 
-# Call to action for next page
+
+st.markdown("---")
+# Introduction
 st.markdown("""
-<div style="text-align: center; margin-top: 2rem;">
-    <a href="/02_Digital_Twins" target="_self" style="
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 12px 24px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;">
-        Next: Explore Digital Twins →
-    </a>
-</div>
-""", unsafe_allow_html=True)
+## Click around on the Knowledge Graph...it's interactive!
+
+""")
