@@ -37,28 +37,13 @@ st.title("Understanding Knowledge Graphs")
 st.markdown("### The Building Blocks of Context-AI")
 
 # Introduction with GIF
-col1, col2 = st.columns([3, 2])
 
-with col1:
-    st.markdown("""
-    ## What is a Knowledge Graph?
-    
-    A knowledge graph connects information through **relationships**, creating a network of knowledge that reveals insights hidden in isolated data.
-    
-    Think of it like the difference between:
-    - A list of contacts in your phone
-    - Your entire social network showing who knows whom and how
-    
-    In Context-AI, knowledge graphs serve as the foundation for understanding complex, interconnected information.
-    """)
-
-with col2:
-    # Display the KG basics animation
-    st.markdown("""
-    <div style="text-align: center; padding-top: 2rem;">
-        <img src="https://raw.githubusercontent.com/Kris-Nale314/context-ai/main/images/sillyKgExample.gif" width="100%">
-    </div>
-    """, unsafe_allow_html=True)
+# Display the KG basics animation
+st.markdown("""
+<div style="text-align: center; padding-top: 2rem;">
+    <img src="https://raw.githubusercontent.com/Kris-Nale314/context-ai/main/images/sillyKgExample.gif" width="70%">
+</div>
+""", unsafe_allow_html=True)
 
 # Interactive section
 st.markdown("""
