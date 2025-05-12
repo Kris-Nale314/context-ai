@@ -18,9 +18,10 @@ if show_slide_at_top:
     
     st.markdown("""
     <div style="text-align: center;">
-        <img src="https://raw.githubusercontent.com/Kris-Nale314/context-ai/main/images/kgBasics.gif" width="600">
+        <img src="https://raw.githubusercontent.com/Kris-Nale314/context-ai/main/images/kgBasics.gif" width="1000">
     </div>
     """, unsafe_allow_html=True)
+
     st.markdown("---")
 
 # Introduction
